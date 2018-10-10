@@ -1,0 +1,46 @@
+{
+  "name": "gantt-engine",
+  "version": "1.0.0",
+  "main": "dist/gantt-engine.cjs.js",
+  "module": "dist/gantt-engine.esm.js",
+  "dependencies": {
+    "@babel/preset-env": "^7.1.0",
+    "array-starts-with": "^1.0.2",
+    "is-empty": "^1.2.0",
+    "is-var-name": "^2.0.0",
+    "timestring": "^5.0.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.1.2",
+    "@babel/plugin-external-helpers": "^7.0.0",
+    "@babel/register": "^7.0.0",
+    "babel-plugin-add-module-exports": "^1.0.0",
+    "babel-polyfill": "^6.26.0",
+    "dateformat": "^3.0.3",
+    "mocha": "^5.2.0",
+    "rollup": "^0.66.4",
+    "rollup-plugin-babel": "^4.0.3",
+    "rollup-plugin-commonjs": "^8.0.2",
+    "rollup-plugin-node-resolve": "^3.0.0",
+    "should": "^13.2.3",
+    "should-sinon": "^0.0.6",
+    "sinon": "^6.3.5",
+    "standard": "^12.0.1"
+  },
+  "scripts": {
+    "build": "rollup -c",
+    "dev": "rollup -c -w",
+    "test": "mocha --watch --require @babel/register --require babel-polyfill --require source-map-support",
+    "prepublish": "rollup -c"
+  },
+  "standard": {
+    "globals": [
+      "describe",
+      "it",
+      "beforeEach"
+    ]
+  },
+  "files": [
+    "dist"
+  ]
+}
