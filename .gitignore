@@ -62,3 +62,4 @@ typings/
 
 *.sw[p|o]
 dist/
+Session.vim

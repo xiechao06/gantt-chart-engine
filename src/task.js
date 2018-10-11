@@ -279,7 +279,7 @@ class Task {
         : arg
     } else {
       if (arg === void 0) {
-        return this.expectedToFinishAt() - this.expectedToStartAt()
+        return this.expectedToFinishAt - this.expectedToStartAt
       }
       throw new Error('non-leaf task can not set expected time span')
     }
@@ -366,9 +366,43 @@ class Task {
     this._onFinishCbs.push(arg)
     return this
   }
+
+  toJson () {
+    return {
+      name: this.name(),
+      canonicalName: this.canonicalName,
+      label: this.label(),
+      subTasks: this.subTasks.map(it => it.toJson()),
+      dependsUpon: this.getDependsUpon().map(it => it.canonicalName),
+      expectedToStartAt: this.expectedToStartAt,
+      startAt: this.startAt(),
+      startArg: this.startArg(),
+      expectedTimeSpan: this.expectedTimeSpan(),
+      finishAt: this.finishAt(),
+      finishArg: this.finishArg(),
+      expectedToFinishAt: this.expectedToFinishAt,
+      description: this.description(),
+      ops: this.ops
+    }
+  }
+
+  fromJson (arg) {
+    for (let k of [
+      'name', 'label', 'startAt', 'startArg', 'expectedTimeSpan', 'finishAt',
+      'finishArg', 'description'
+    ]) {
+      arg[k] && this[k](arg[k])
+    }
+    arg.subTasks &&
+      arg.subTasks.length &&
+      arg.subTasks.forEach(it => this.addSubTask(task => task.fromJson(it)))
+    arg.dependsUpon && arg.dependsUpon.length &&
+      this.dependsUpon(arg.dependsUpon)
+    return this
+  }
 }
 
-Task.ACTION_START = Symbol('TASK_ACTION_START')
-Task.ACTION_FINISH = Symbol('TASK_ACTION_FINISH')
+Task.ACTION_START = 'TASK_ACTION_START'
+Task.ACTION_FINISH = 'TASK_ACTION_FINISH'
 
 export default Task

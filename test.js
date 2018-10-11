@@ -84,10 +84,10 @@ describe('leaf task', function () {
 })
 
 describe('non leaf task', function () {
-  let a, aa, b, ba, bb, c, ca, caa, cab
+  let a, aa, b, ba, bb, c, ca, caa, cab, project
 
   beforeEach(function () {
-    let project = new Project('project')
+    project = new Project('project')
       .addSubTask(task => task
         .name('A')
         .addSubTask(task => task
@@ -267,5 +267,17 @@ describe('non leaf task', function () {
     dateformat(new Date(a.expectedToFinishAt), 'yyyy-mm-dd').should.be.exactly('2018-10-02')
     aa.finishAt('2018-10-03')
     dateformat(new Date(a.expectedToFinishAt), 'yyyy-mm-dd').should.be.exactly('2018-10-03')
+  })
+
+  it('toJson', function () {
+    aa.startAt('2018-10-01')
+    caa.startArg({ a: 'foo' })
+    let _project = new Project().fromJson(project.toJson())
+    let _aa = _project.$(['A', 'AA'])
+    _aa.name().should.be.exactly('AA')
+    dateformat(new Date(aa.startAt()), 'yyyy-mm-dd').should.be.exactly('2018-10-01')
+    let _caa = _project.$(['C', 'CA', 'CAA'])
+    _caa.name().should.be.exactly('CAA')
+    _caa.startArg().a.should.be.exactly('foo')
   })
 })
