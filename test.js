@@ -292,6 +292,9 @@ describe('non leaf task', function () {
     aa.finishAt('2018-09-20')
     bb.ops.should.be.deepEqual([Task.OP_START, Task.OP_FINISH])
     bb.opsFilter(ops => ops.slice(1)).ops.should.be.deepEqual([Task.OP_FINISH])
+
+    ca.dependsUpon(bb)
+    ca.ops.should.be.deepEqual([])
   })
 
   it('toJSON/fromJSON', function () {
