@@ -205,7 +205,7 @@ describe('non leaf task', function () {
     dateformat(new Date(a.startAt()), 'yyyy-mm-dd').should.be.exactly('2018-10-01')
 
     ba.startAt('2018-10-03')
-    ba.startAt('2018-10-01')
+    bb.startAt('2018-10-01')
     dateformat(new Date(b.startAt()), 'yyyy-mm-dd').should.be.exactly('2018-10-01')
   })
 
