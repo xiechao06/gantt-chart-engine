@@ -36,7 +36,7 @@ class Task {
       return this._name
     }
     if (!isVarName(arg)) {
-      throw new Error('invalid task name, should use a valid javascript identifier name')
+      throw new Error('invalid task name ' + arg + ', should use a valid javascript identifier name')
     }
     this._name = arg
     return this
