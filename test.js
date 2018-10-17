@@ -288,10 +288,10 @@ describe('non leaf task', function () {
     dateformat(new Date(a.expectedToFinishAt), 'yyyy-mm-dd').should.be.exactly('2018-10-03')
   })
 
-  it('toJson', function () {
+  it('toJSON/fromJSON', function () {
     aa.startAt('2018-10-01')
     caa.startArg({ a: 'foo' })
-    let _project = new Project().fromJson(project.toJson())
+    let _project = new Project().fromJSON(project.toJSON())
     let _aa = _project.$(['A', 'AA'])
     _aa.name().should.be.exactly('AA')
     dateformat(new Date(aa.startAt()), 'yyyy-mm-dd').should.be.exactly('2018-10-01')

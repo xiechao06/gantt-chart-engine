@@ -392,7 +392,7 @@ class Task {
     return Math.max(...this._subTasks.map(it => it.depth)) + 1
   }
 
-  toJson () {
+  toJSON () {
     return {
       name: this.name(),
       bundle: this.bundle(),
@@ -400,7 +400,7 @@ class Task {
       isLeaf: this.isLeaf,
       canonicalName: this.canonicalName,
       label: this.label(),
-      subTasks: this.subTasks.map(it => it.toJson()),
+      subTasks: this.subTasks.map(it => it.toJSON()),
       dependsUpon: this.getDependsUpon().map(it => it.canonicalName),
       expectedToStartAt: this.expectedToStartAt,
       startAt: this.startAt(),
@@ -414,7 +414,7 @@ class Task {
     }
   }
 
-  fromJson (arg) {
+  fromJSON (arg) {
     for (let k of [
       'name', 'label', 'startAt', 'startArg', 'expectedTimeSpan', 'finishAt',
       'finishArg', 'description', 'bundle'
@@ -423,7 +423,7 @@ class Task {
     }
     arg.subTasks &&
       arg.subTasks.length &&
-      arg.subTasks.forEach(it => this.addSubTask(task => task.fromJson(it)))
+      arg.subTasks.forEach(it => this.addSubTask(task => task.fromJSON(it)))
     arg.dependsUpon && arg.dependsUpon.length &&
       this.dependsUpon(arg.dependsUpon)
     return this
