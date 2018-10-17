@@ -426,7 +426,8 @@ class Task {
       finishArg: this.finishArg(),
       expectedToFinishAt: this.expectedToFinishAt,
       description: this.description(),
-      ops: this.ops()
+      ops: this.ops(),
+      nextOp: this.nextOp
     }
   }
 
