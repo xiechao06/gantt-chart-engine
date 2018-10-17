@@ -46,9 +46,6 @@ class Task {
     if (arg === void 0) {
       return this._bundle
     }
-    if (!isVarName(arg)) {
-      throw new Error('invalid task name, should use a valid javascript identifier name')
-    }
     this._bundle = arg
     return this
   }
