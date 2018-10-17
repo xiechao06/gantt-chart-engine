@@ -16,7 +16,7 @@ export default [
       babel({
         exclude: ['node_modules/**'],
         externalHelpers: true,
-        plugins: ['@babel/plugin-external-helpers', 'add-module-exports'],
+        plugins: ['@babel/plugin-external-helpers', '@babel/polyfill', 'add-module-exports'],
         presets: ['@babel/preset-env']
       })
     ]

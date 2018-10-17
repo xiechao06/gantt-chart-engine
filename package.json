@@ -13,9 +13,9 @@
   "devDependencies": {
     "@babel/core": "^7.1.2",
     "@babel/plugin-external-helpers": "^7.0.0",
+    "@babel/polyfill": "^7.0.0",
     "@babel/register": "^7.0.0",
     "babel-plugin-add-module-exports": "^1.0.0",
-    "babel-polyfill": "^6.26.0",
     "dateformat": "^3.0.3",
     "mocha": "^5.2.0",
     "rollup": "^0.66.6",
@@ -30,7 +30,7 @@
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -c -w",
-    "test": "mocha --watch --require @babel/register --require babel-polyfill --require source-map-support",
+    "test": "mocha --watch --require @babel/register --require @babel/polyfill --require source-map-support",
     "prepublish": "rollup -c"
   },
   "standard": {
