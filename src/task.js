@@ -67,10 +67,13 @@ class Task {
     return this._subTasks
   }
 
-  addSubTask (task) {
-    if (!(task instanceof Task)) {
-      if (typeof task === 'function') {
-        task = task(new Task('', this))
+  addSubTask (arg) {
+    let task
+    if (arg instanceof Task) {
+      task = arg
+    } else {
+      if (typeof arg === 'function') {
+        task = new Task('', this)
       } else if (typeof task === 'string') {
         task = new Task(task, this)
       } else {
@@ -81,6 +84,11 @@ class Task {
       throw new Error('task ' + task.name() + ' already exists')
     }
     this._subTasks.push(task)
+    // add at first, then apply function, otherwise sub task can't depends upon
+    // some tasks
+    if (typeof arg === 'function') {
+      arg(task)
+    }
     return this
   }
 
