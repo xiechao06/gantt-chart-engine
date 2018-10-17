@@ -16,6 +16,7 @@
     "@babel/polyfill": "^7.0.0",
     "@babel/register": "^7.0.0",
     "babel-plugin-add-module-exports": "^1.0.0",
+    "babel-polyfill": "^6.26.0",
     "dateformat": "^3.0.3",
     "mocha": "^5.2.0",
     "rollup": "^0.66.6",
