@@ -344,7 +344,7 @@ class Task {
     if (arg === void 0) {
       return this._ops || (
         this.isLeaf
-          ? [Task.ACTION_START, Task.ACTION_FINISH]
+          ? [Task.OP_START, Task.OP_FINISH]
           : []
       )
     }
@@ -353,11 +353,11 @@ class Task {
     }
     if (!Array.isArray(arg) ||
       arg.length > 2 ||
-      !arg.every(it => it === Task.ACTION_START || it === Task.ACTION_FINISH)) {
+      !arg.every(it => it === Task.OP_START || it === Task.OP_FINISH)) {
       throw new Error('ops must be an array containing op ' +
-        Task.ACTION_START +
+        Task.OP_START +
         ' or ' +
-        Task.ACTION_FINISH)
+        Task.OP_FINISH)
     }
     this._ops = arg
     return this
@@ -371,8 +371,8 @@ class Task {
       throw new GanttInvalidOp(action)
     }
     action = {
-      [Task.ACTION_START]: 'start',
-      [Task.ACTION_FINISH]: 'finish'
+      [Task.OP_START]: 'start',
+      [Task.OP_FINISH]: 'finish'
     }[action]
     ;(this[action])(arg)
     if (action === 'start') {
@@ -445,7 +445,7 @@ class Task {
   }
 }
 
-Task.ACTION_START = 'start'
-Task.ACTION_FINISH = 'finish'
+Task.OP_START = 'start'
+Task.OP_FINISH = 'finish'
 
 export default Task

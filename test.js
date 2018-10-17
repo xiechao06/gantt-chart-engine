@@ -73,16 +73,16 @@ describe('leaf task', function () {
     let startCb = sinon.spy()
     let finishCb = sinon.spy()
     task.onStart(startCb).onFinish(finishCb)
-    await task.perform(Task.ACTION_START)
+    await task.perform(Task.OP_START)
     startCb.should.be.calledOn(task)
-    await task.perform(Task.ACTION_FINISH)
+    await task.perform(Task.OP_FINISH)
     finishCb.should.be.calledOn(task)
   })
 
   it('ops', async function () {
     task.ops().should.have.length(2)
-    task.ops()[0].should.be.exactly(Task.ACTION_START)
-    task.ops([Task.ACTION_FINISH]).ops().should.have.length(1)
+    task.ops()[0].should.be.exactly(Task.OP_START)
+    task.ops([Task.OP_FINISH]).ops().should.have.length(1)
   })
 })
 
