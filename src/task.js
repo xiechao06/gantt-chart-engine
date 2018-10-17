@@ -53,6 +53,17 @@ class Task {
     return this
   }
 
+  bundle (arg) {
+    if (arg === void 0) {
+      return this._bundle
+    }
+    if (!isVarName(arg)) {
+      throw new Error('invalid task name, should use a valid javascript identifier name')
+    }
+    this._bundle = arg
+    return this
+  }
+
   get canonicalName () {
     return (this._parent ? this._parent.canonicalName : [])
       .concat(this._name)
@@ -233,7 +244,14 @@ class Task {
    * actual progressing
    * */
   get expectedToStartAt () {
-    return Math.max.apply(null, this.getDependsUpon().map(it => it.expectedToFinishAt).concat(0))
+    return Math.max.apply(
+      null,
+      this.isLeaf()
+        ? this.getDependsUpon().map(it => it.expectedToFinishAt).concat(0)
+        // if not leaf, only ask sub tasks, since they will depends upon my dependents
+        // check dependsUpon
+        : this.subTasks.map(it => it.expectedToStartAt)
+    )
   }
 
   start (args) {
@@ -399,6 +417,10 @@ class Task {
     arg.dependsUpon && arg.dependsUpon.length &&
       this.dependsUpon(arg.dependsUpon)
     return this
+  }
+
+  get nextOp () {
+    return (this.ops || [])[0]
   }
 }
 

@@ -1,6 +1,5 @@
 const should = require('should')
-const Task = require('./src/task')
-const Project = require('./src/project')
+const { Task, Project } = require('./src/')
 const dateformat = require('dateformat')
 const ts = require('timestring')
 const sinon = require('sinon')
@@ -19,6 +18,10 @@ describe('leaf task', function () {
 
   it('name', function () {
     task.name('abc').name().should.be.exactly('abc')
+  })
+
+  it('bundle', function () {
+    task.bundle('foo').bundle().should.be.exactly('foo')
   })
 
   it('canonicalName', function () {
@@ -252,6 +255,12 @@ describe('non leaf task', function () {
     ca.dependsUpon(b)
     ca.expectedToStartAt.should.be.exactly(ts('7d', 'ms'))
     ca.dependsUpon().map(it => it.canonicalName).should.be.deepEqual([['A', 'AA'], ['B']])
+  })
+
+  it('expectedToStartAt', function () {
+    bb.dependsUpon(aa)
+    aa.expectedTimeSpan('1d')
+    b.expectedToStartAt.should.be.exactly(ts('1d', 'ms'))
   })
 
   it('removeDependsOn', function () {
