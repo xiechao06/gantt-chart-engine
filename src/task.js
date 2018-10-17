@@ -12,21 +12,10 @@ function taskError (taskName, tpl) {
   return new Error(tpl(taskName))
 }
 
-function defaultOpsFunc () {
-  return [Task.ACTION_START, Task.ACTION_FINISH]
-}
-
 class Task {
-  constructor (name, parent, {
-    opsFunc = defaultOpsFunc,
-    canonicalNameincludeRoot = false
-  } = {}) {
+  constructor (name, parent) {
     name && this.name(name)
     this._parent = parent
-    this._opts = {
-      opsFunc,
-      canonicalNameincludeRoot
-    }
     this._onStartCbs = []
     this._onFinishCbs = []
     this._subTasks = []
@@ -351,12 +340,34 @@ class Task {
     return this
   }
 
-  get ops () {
-    return this._opts.opsFunc.apply(this)
+  ops (arg) {
+    if (arg === void 0) {
+      return this._ops || (
+        this.isLeaf
+          ? [Task.ACTION_START, Task.ACTION_FINISH]
+          : []
+      )
+    }
+    if (!this.isLeaf && !isEmpty(arg)) {
+      throw new Error('non-leaf tasks can\'t set ops')
+    }
+    if (!Array.isArray(arg) ||
+      arg.length > 2 ||
+      !arg.every(it => it === Task.ACTION_START || it === Task.ACTION_FINISH)) {
+      throw new Error('ops must be an array containing op ' +
+        Task.ACTION_START +
+        ' or ' +
+        Task.ACTION_FINISH)
+    }
+    this._ops = arg
+    return this
   }
 
   async perform (action, arg) {
-    if (this.ops.indexOf(action) === -1) {
+    if (!this.isLeaf) {
+      throw new Error('you can\'t perform operation upon non-leaf task')
+    }
+    if (this.ops().indexOf(action) === -1) {
       throw new GanttInvalidOp(action)
     }
     action = {
@@ -410,14 +421,14 @@ class Task {
       finishArg: this.finishArg(),
       expectedToFinishAt: this.expectedToFinishAt,
       description: this.description(),
-      ops: this.ops
+      ops: this.ops()
     }
   }
 
   fromJSON (arg) {
     for (let k of [
       'name', 'label', 'startAt', 'startArg', 'expectedTimeSpan', 'finishAt',
-      'finishArg', 'description', 'bundle'
+      'finishArg', 'description', 'bundle', 'ops'
     ]) {
       arg[k] && this[k](arg[k])
     }
@@ -430,11 +441,11 @@ class Task {
   }
 
   get nextOp () {
-    return (this.ops || [])[0]
+    return (this.ops() || [])[0]
   }
 }
 
-Task.ACTION_START = 'TASK_ACTION_START'
-Task.ACTION_FINISH = 'TASK_ACTION_FINISH'
+Task.ACTION_START = 'start'
+Task.ACTION_FINISH = 'finish'
 
 export default Task

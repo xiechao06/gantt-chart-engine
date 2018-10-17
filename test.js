@@ -79,14 +79,10 @@ describe('leaf task', function () {
     finishCb.should.be.calledOn(task)
   })
 
-  it('opsFunc', async function () {
-    let task = new Task('foo', null, {
-      opsFunc () {
-        return [Task.ACTION_FINISH]
-      }
-    })
-    task.ops.should.have.length(1)
-    task.ops[0].should.be.exactly(Task.ACTION_FINISH)
+  it('ops', async function () {
+    task.ops().should.have.length(2)
+    task.ops()[0].should.be.exactly(Task.ACTION_START)
+    task.ops([Task.ACTION_FINISH]).ops().should.have.length(1)
   })
 })
 
@@ -286,6 +282,13 @@ describe('non leaf task', function () {
     dateformat(new Date(a.expectedToFinishAt), 'yyyy-mm-dd').should.be.exactly('2018-10-02')
     aa.finishAt('2018-10-03')
     dateformat(new Date(a.expectedToFinishAt), 'yyyy-mm-dd').should.be.exactly('2018-10-03')
+  })
+
+  it('ops', async function () {
+    ;(function () {
+      a.ops([Task.ACTOIN_START])
+    }).should.throw(/can't set ops/)
+    a.ops().should.be.deepEqual([])
   })
 
   it('toJSON/fromJSON', function () {
