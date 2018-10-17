@@ -80,9 +80,9 @@ describe('leaf task', function () {
   })
 
   it('ops', async function () {
-    task.ops().should.have.length(2)
-    task.ops()[0].should.be.exactly(Task.OP_START)
-    task.ops([Task.OP_FINISH]).ops().should.have.length(1)
+    task.ops.should.have.length(2)
+    task.ops[0].should.be.exactly(Task.OP_START)
+    task.opsFilter(ops => ops.slice(1)).ops.should.have.length(1)
   })
 })
 
@@ -285,10 +285,13 @@ describe('non leaf task', function () {
   })
 
   it('ops', async function () {
-    ;(function () {
-      a.ops([Task.ACTOIN_START])
-    }).should.throw(/can't set ops/)
-    a.ops().should.be.deepEqual([])
+    a.ops.should.be.deepEqual([])
+    aa.ops.should.be.deepEqual([Task.OP_START, Task.OP_FINISH])
+    bb.dependsUpon(aa)
+    bb.ops.should.be.deepEqual([])
+    aa.finishAt('2018-09-20')
+    bb.ops.should.be.deepEqual([Task.OP_START, Task.OP_FINISH])
+    bb.opsFilter(ops => ops.slice(1)).ops.should.be.deepEqual([Task.OP_FINISH])
   })
 
   it('toJSON/fromJSON', function () {

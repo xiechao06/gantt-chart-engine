@@ -345,34 +345,33 @@ class Task {
     return this
   }
 
-  ops (arg) {
-    if (arg === void 0) {
-      return this._ops || (
-        this.isLeaf
-          ? [Task.OP_START, Task.OP_FINISH]
-          : []
-      )
-    }
-    if (!this.isLeaf && !isEmpty(arg)) {
-      throw new Error('non-leaf tasks can\'t set ops')
-    }
-    if (!Array.isArray(arg) ||
-      arg.length > 2 ||
-      !arg.every(it => it === Task.OP_START || it === Task.OP_FINISH)) {
-      throw new Error('ops must be an array containing op ' +
-        Task.OP_START +
-        ' or ' +
-        Task.OP_FINISH)
-    }
-    this._ops = arg
+  opsFilter (arg) {
+    this._opsFilter = arg
     return this
+  }
+
+  get ops () {
+    if (!this.isLeaf ||
+      !this.getDependsUpon().every(it => it._finishAt) ||
+      this._finishAt
+    ) {
+      return []
+    }
+    let ret = [Task.OP_START, Task.OP_FINISH]
+    if (this._startAt) {
+      ret = ret.slice(1)
+    }
+    if (this._opsFilter) {
+      ret = this._opsFilter(ret)
+    }
+    return ret
   }
 
   async perform (action, arg) {
     if (!this.isLeaf) {
       throw new Error('you can\'t perform operation upon non-leaf task')
     }
-    if (this.ops().indexOf(action) === -1) {
+    if (this.ops.indexOf(action) === -1) {
       throw new GanttInvalidOp(action)
     }
     action = {
@@ -426,7 +425,7 @@ class Task {
       finishArg: this.finishArg(),
       expectedToFinishAt: this.expectedToFinishAt,
       description: this.description(),
-      ops: this.ops(),
+      ops: this.ops,
       nextOp: this.nextOp
     }
   }
@@ -434,7 +433,7 @@ class Task {
   fromJSON (arg) {
     for (let k of [
       'name', 'label', 'startAt', 'startArg', 'expectedTimeSpan', 'finishAt',
-      'finishArg', 'description', 'bundle', 'ops'
+      'finishArg', 'description', 'bundle'
     ]) {
       arg[k] && this[k](arg[k])
     }
@@ -447,7 +446,7 @@ class Task {
   }
 
   get nextOp () {
-    return (this.ops() || [])[0]
+    return (this.ops || [])[0]
   }
 }
 
