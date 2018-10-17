@@ -13,7 +13,7 @@ describe('leaf task', function () {
   })
 
   it('is leaf', function () {
-    task.isLeaf().should.be.exactly(true)
+    task.isLeaf.should.be.exactly(true)
   })
 
   it('name', function () {
@@ -22,6 +22,10 @@ describe('leaf task', function () {
 
   it('bundle', function () {
     task.bundle('foo').bundle().should.be.exactly('foo')
+  })
+
+  it('depth', function () {
+    task.depth.should.be.exactly(1)
   })
 
   it('canonicalName', function () {
@@ -136,7 +140,13 @@ describe('non leaf task', function () {
   })
 
   it('is leaf', function () {
-    a.isLeaf().should.be.exactly(false)
+    a.isLeaf.should.be.exactly(false)
+  })
+
+  it('depth', function () {
+    a.depth.should.be.exactly(2)
+    b.depth.should.be.exactly(2)
+    c.depth.should.be.exactly(3)
   })
 
   it('canonicalName', function () {
@@ -175,7 +185,7 @@ describe('non leaf task', function () {
 
   it('removeSubTask', function () {
     a.removeSubTask('AA')
-    a.isLeaf().should.be.exactly(true)
+    a.isLeaf.should.be.exactly(true)
     ;(function () {
       a.removeSubTask('AA')
     }).should.throw(Error)

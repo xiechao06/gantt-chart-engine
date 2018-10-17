@@ -34,7 +34,7 @@ class Task {
     this.$ = this.find
   }
 
-  isLeaf () {
+  get isLeaf () {
     return isEmpty(this._subTasks)
   }
 
@@ -246,7 +246,7 @@ class Task {
   get expectedToStartAt () {
     return Math.max.apply(
       null,
-      this.isLeaf()
+      this.isLeaf
         ? this.getDependsUpon().map(it => it.expectedToFinishAt).concat(0)
         // if not leaf, only ask sub tasks, since they will depends upon my dependents
         // check dependsUpon
@@ -259,7 +259,7 @@ class Task {
   }
 
   startAt (t) {
-    if (this.isLeaf()) {
+    if (this.isLeaf) {
       if (t === void 0) {
         return this._startAt
       }
@@ -288,7 +288,7 @@ class Task {
   }
 
   expectedTimeSpan (arg) {
-    if (this.isLeaf()) {
+    if (this.isLeaf) {
       if (arg === void 0) {
         return this._expectedTimeSpan
       }
@@ -309,7 +309,7 @@ class Task {
   }
 
   finishAt (t) {
-    if (this.isLeaf()) {
+    if (this.isLeaf) {
       if (t === void 0) {
         return this._finishAt
       }
@@ -328,7 +328,7 @@ class Task {
   }
 
   get expectedToFinishAt () {
-    if (this.isLeaf()) {
+    if (this.isLeaf) {
       return this._finishAt ||
         ((this.startAt() || this.expectedToStartAt) + this._expectedTimeSpan)
     }
@@ -385,9 +385,19 @@ class Task {
     return this
   }
 
+  get depth () {
+    if (this.isLeaf) {
+      return 1
+    }
+    return Math.max(...this._subTasks.map(it => it.depth)) + 1
+  }
+
   toJson () {
     return {
       name: this.name(),
+      bundle: this.bundle(),
+      depth: this.depth,
+      isLeaf: this.isLeaf,
       canonicalName: this.canonicalName,
       label: this.label(),
       subTasks: this.subTasks.map(it => it.toJson()),
@@ -407,7 +417,7 @@ class Task {
   fromJson (arg) {
     for (let k of [
       'name', 'label', 'startAt', 'startArg', 'expectedTimeSpan', 'finishAt',
-      'finishArg', 'description'
+      'finishArg', 'description', 'bundle'
     ]) {
       arg[k] && this[k](arg[k])
     }
