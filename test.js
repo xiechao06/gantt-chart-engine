@@ -16,6 +16,10 @@ describe('leaf task', function () {
     task.isLeaf.should.be.exactly(true)
   })
 
+  it('level', function () {
+    task.level.should.be.exactly(0)
+  })
+
   it('name', function () {
     task.name('abc').name().should.be.exactly('abc')
   })
@@ -137,6 +141,12 @@ describe('non leaf task', function () {
 
   it('is leaf', function () {
     a.isLeaf.should.be.exactly(false)
+  })
+
+  it('level', function () {
+    a.level.should.be.exactly(1)
+    aa.level.should.be.exactly(2)
+    caa.level.should.be.exactly(3)
   })
 
   it('depth', function () {

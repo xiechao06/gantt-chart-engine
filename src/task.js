@@ -20,7 +20,12 @@ class Task {
     this._onFinishCbs = []
     this._subTasks = []
     this._dependsUpon = []
+    this._level = parent ? parent.level + 1 : 0
     this.$ = this.find
+  }
+
+  get level () {
+    return this._level
   }
 
   get isLeaf () {
@@ -426,7 +431,8 @@ class Task {
       expectedToFinishAt: this.expectedToFinishAt,
       description: this.description(),
       ops: this.ops,
-      nextOp: this.nextOp
+      nextOp: this.nextOp,
+      level: this.level
     }
   }
 
