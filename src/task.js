@@ -74,7 +74,7 @@ class Task {
     } else {
       if (typeof arg === 'function') {
         task = new Task('', this)
-      } else if (typeof task === 'string') {
+      } else if (typeof arg === 'string') {
         task = new Task(task, this)
       } else {
         throw new Error('task must be a function or string')
@@ -284,7 +284,7 @@ class Task {
   expectedTimeSpan (arg) {
     if (this.isLeaf) {
       if (arg === void 0) {
-        return this._expectedTimeSpan
+        return this._expectedTimeSpan || 0
       }
       this._expectedTimeSpan = typeof arg === 'string'
         ? timestring(arg, 'ms')
