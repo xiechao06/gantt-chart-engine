@@ -75,7 +75,7 @@ class Task {
       if (typeof arg === 'function') {
         task = new Task('', this)
       } else if (typeof arg === 'string') {
-        task = new Task(task, this)
+        task = new Task(arg, this)
       } else {
         throw new Error('task must be a function or string')
       }
