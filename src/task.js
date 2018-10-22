@@ -21,6 +21,7 @@ class Task {
     this._subTasks = []
     this._dependsUpon = []
     this._level = parent ? parent.level + 1 : 0
+    this._base = 0
     this.$ = this.find
   }
 
@@ -34,6 +35,14 @@ class Task {
 
   get root () {
     return this._parent ? this._parent.root : this
+  }
+
+  base (arg) {
+    if (arg === void 0) {
+      return this._base
+    }
+    this._base = new Date(arg).getTime()
+    return this
   }
 
   name (arg) {
@@ -239,18 +248,21 @@ class Task {
 
   /**
    * when this task is expected to start at.
-   * it has nothing to do with the
-   * actual progressing
+   * it will equal to startAt when it is started
    * */
   get expectedToStartAt () {
-    return Math.max.apply(
-      null,
-      this.isLeaf
-        ? this.getDependsUpon().map(it => it.expectedToFinishAt).concat(0)
-        // if not leaf, only ask sub tasks, since they will depends upon my dependents
-        // check dependsUpon
-        : this.subTasks.map(it => it.expectedToStartAt)
-    )
+    if (this.isLeaf) {
+      let startAt = this.startAt()
+      if (startAt) {
+        return startAt
+      }
+      let dependsUpon = this.getDependsUpon()
+      if (isEmpty(dependsUpon)) {
+        return this.root.base()
+      }
+      return Math.max(...this.getDependsUpon().map(it => it.expectedToFinishAt))
+    }
+    return Math.max(...this.subTasks.map(it => it.expectedToStartAt))
   }
 
   start (args) {
@@ -289,6 +301,12 @@ class Task {
   expectedTimeSpan (arg) {
     if (this.isLeaf) {
       if (arg === void 0) {
+        if (this.finishAt()) {
+          if (this.startAt()) {
+            return this.finishAt() - this.startAt()
+          }
+          return 0
+        }
         return this._expectedTimeSpan || 0
       }
       this._expectedTimeSpan = typeof arg === 'string'

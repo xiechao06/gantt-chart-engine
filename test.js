@@ -50,7 +50,9 @@ describe('leaf task', function () {
   })
 
   it('expectedTimeSpan', function () {
-    task.expectedTimeSpan('1d').expectedTimeSpan().should.be.exactly(1 * 24 * 3600 * 1000)
+    task.expectedTimeSpan('1d').expectedTimeSpan().should.be.exactly(timestring('1d', 'ms'))
+    task.startAt('2018-10-10').expectedTimeSpan().should.be.exactly(timestring('1d', 'ms'))
+    task.finishAt('2018-10-11').expectedTimeSpan().should.be.exactly(timestring('1d', 'ms'))
   })
 
   it('finishAt', function () {
@@ -141,6 +143,17 @@ describe('non leaf task', function () {
 
   it('is leaf', function () {
     a.isLeaf.should.be.exactly(false)
+  })
+
+  it('base', function () {
+    project.base('2018-10-10')
+    dateformat(new Date(aa.expectedToStartAt), 'yyyy-mm-dd').should.be.exactly('2018-10-10')
+    dateformat(new Date(bb.expectedToStartAt), 'yyyy-mm-dd').should.be.exactly('2018-10-10')
+    dateformat(new Date(caa.expectedToStartAt), 'yyyy-mm-dd').should.be.exactly('2018-10-10')
+    dateformat(new Date(cab.expectedToStartAt), 'yyyy-mm-dd').should.be.exactly('2018-10-10')
+    dateformat(new Date(a.expectedToStartAt), 'yyyy-mm-dd').should.be.exactly('2018-10-10')
+    b.dependsUpon(aa.expectedTimeSpan('2d'))
+    dateformat(new Date(b.expectedToStartAt), 'yyyy-mm-dd').should.be.exactly('2018-10-12')
   })
 
   it('level', function () {
