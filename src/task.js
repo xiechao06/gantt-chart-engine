@@ -460,7 +460,7 @@ class Task {
       'name', 'label', 'startAt', 'startArg', 'expectedTimeSpan', 'finishAt',
       'finishArg', 'description', 'bundle'
     ]) {
-      arg[k] && this[k](arg[k])
+      arg[k] !== void 0 && this[k](arg[k])
     }
     arg.subTasks &&
       arg.subTasks.length &&
