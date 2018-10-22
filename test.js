@@ -3,6 +3,7 @@ const { Task, Project } = require('./src/')
 const dateformat = require('dateformat')
 const ts = require('timestring')
 const sinon = require('sinon')
+const timestring = require('timestring')
 require('should-sinon')
 
 describe('leaf task', function () {
@@ -330,5 +331,16 @@ describe('non leaf task', function () {
     let _caa = _project.$(['C', 'CA', 'CAA'])
     _caa.name().should.be.exactly('CAA')
     _caa.startArg().a.should.be.exactly('foo')
+  })
+
+  it('baseline', function () {
+    project.base('2018-10-10')
+    aa.startAt('2018-10-12')
+    dateformat(new Date(aa.expectedToStartAt), 'yyyy-mm-dd').should.be.exactly('2018-10-12')
+    let { baseline } = project
+    dateformat(new Date(baseline.base()), 'yyyy-mm-dd').should.be.exactly('2018-10-10')
+    let _aa = baseline.$(['A', 'AA'])
+    should(_aa.startAt()).not.be.ok()
+    dateformat(new Date(_aa.expectedToStartAt), 'yyyy-mm-dd').should.be.exactly('2018-10-10')
   })
 })
