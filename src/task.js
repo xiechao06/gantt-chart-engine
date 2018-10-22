@@ -434,6 +434,7 @@ class Task {
     return {
       name: this.name(),
       bundle: this.bundle(),
+      parent: (this._parent || {}).canonicalName,
       depth: this.depth,
       isLeaf: this.isLeaf,
       canonicalName: this.canonicalName,
