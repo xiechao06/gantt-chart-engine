@@ -8,7 +8,7 @@ function taskError (taskName, tpl) {
   if (taskName instanceof Task) {
     taskName = taskName.canonicalName
   }
-  taskName = '[' + [].concat(taskName).map(it => `'${it}'`).join(',') + ']'
+  taskName = '[' + [].concat(taskName).map(it => `'${it}'`).join(', ') + ']'
   return new Error(tpl(taskName))
 }
 
@@ -213,7 +213,7 @@ class Task {
     let dependsUpon = []
     let root = this.root
     for (let n of canonicalNames) {
-      let task = root.find(n)
+      let task = root.$(n)
       if (!task) {
         throw taskError(n, n => `no such task: ${n}`)
       }
@@ -465,7 +465,7 @@ class Task {
       arg.subTasks.length &&
       arg.subTasks.forEach(it => this.addSubTask(task => task.fromJSON(it)))
     arg.dependsUpon && arg.dependsUpon.length &&
-      this.dependsUpon(arg.dependsUpon)
+      this.dependsUpon(...arg.dependsUpon)
     return this
   }
 

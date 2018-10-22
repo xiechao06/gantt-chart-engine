@@ -323,6 +323,7 @@ describe('non leaf task', function () {
 
   it('toJSON/fromJSON', function () {
     aa.startAt('2018-10-01')
+    bb.dependsUpon(['A', 'AA'])
     caa.startArg({ a: 'foo' })
     let _project = new Project().fromJSON(project.toJSON())
     let _aa = _project.$(['A', 'AA'])
