@@ -23,6 +23,7 @@ class Task {
     this._level = parent ? parent.level + 1 : 0
     this._base = 0
     this.$ = this.find
+    this.duration = this.expectedTimeSpan
   }
 
   get level () {
@@ -451,6 +452,7 @@ class Task {
       startAt: this.startAt(),
       startArg: this.startArg(),
       expectedTimeSpan: this.expectedTimeSpan(),
+      duration: this.expectedTimeSpan(),
       finishAt: this.finishAt(),
       finishArg: this.finishArg(),
       expectedToFinishAt: this.expectedToFinishAt,
