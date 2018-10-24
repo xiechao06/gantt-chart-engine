@@ -226,6 +226,9 @@ describe('non leaf task', function () {
     ba.startAt('2018-10-03')
     bb.startAt('2018-10-01')
     dateformat(new Date(b.startAt()), 'yyyy-mm-dd').should.be.exactly('2018-10-01')
+
+    caa.finishAt('2018-10-10')
+    dateformat(new Date(c.startAt()), 'yyyy-mm-dd').should.be.exactly('2018-10-10')
   })
 
   it('finishAt', function () {

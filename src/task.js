@@ -281,11 +281,11 @@ class Task {
       this._startAt = new Date(t).getTime()
     } else {
       if (t === void 0) {
-        let startedTasks = this._subTasks.filter(it => it.startAt() !== void 0)
+        let startedTasks = this._subTasks.filter(it => it.startAt() || it.finishAt())
         if (!startedTasks.length) {
-          return null
+          return
         }
-        return Math.min.apply(null, startedTasks.map(it => it.startAt()))
+        return Math.min.apply(null, startedTasks.map(it => it.startAt() || it.finishAt()))
       }
       throw Error('non-leaf task can not set start at')
     }
@@ -340,7 +340,7 @@ class Task {
       this._finishAt = new Date(t).getTime()
     } else {
       if (t === void 0) {
-        let finishedTasks = this._subTasks.filter(it => it.finishAt() !== void 0)
+        let finishedTasks = this._subTasks.filter(it => it.finishAt())
         if (finishedTasks.length < this._subTasks.length) {
           return null
         }
