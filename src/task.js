@@ -275,7 +275,7 @@ class Task {
       if (t === void 0) {
         return this._startAt
       }
-      if (!(typeof t === 'string' || typeof t === 'number' || t instanceof Date))  {
+      if (!(typeof t === 'string' || typeof t === 'number' || t instanceof Date)) {
         throw Error(t + ' should be string or number')
       }
       this._startAt = new Date(t).getTime()
@@ -468,7 +468,7 @@ class Task {
       'name', 'label', 'startAt', 'startArg', 'expectedTimeSpan', 'finishAt',
       'finishArg', 'description', 'bundle'
     ]) {
-      arg[k] !== void 0 && this[k](arg[k])
+      arg[k] !== void 0 && arg[k] !== null && this[k](arg[k])
     }
     arg.subTasks &&
       arg.subTasks.length &&

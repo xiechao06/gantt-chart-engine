@@ -219,7 +219,7 @@ describe('non leaf task', function () {
     ;(function () {
       a.startAt('2018-10-01')
     }).should.throw(Error)
-    should(a.startAt()).be.exactly(void 0)
+    should(a.startAt()).not.ok()
     aa.startAt('2018-10-01')
     dateformat(new Date(a.startAt()), 'yyyy-mm-dd').should.be.exactly('2018-10-01')
 
@@ -232,7 +232,7 @@ describe('non leaf task', function () {
     ;(function () {
       a.finishAt('2018-10-01')
     }).should.throw(Error)
-    should(a.finishAt()).be.exactly(void 0)
+    should(a.finishAt()).not.ok()
     aa.finishAt('2018-10-01')
     dateformat(new Date(a.finishAt()), 'yyyy-mm-dd').should.be.exactly('2018-10-01')
 
