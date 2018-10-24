@@ -341,8 +341,8 @@ class Task {
     } else {
       if (t === void 0) {
         let finishedTasks = this._subTasks.filter(it => it.finishAt() !== void 0)
-        if (!finishedTasks.length) {
-          return
+        if (finishedTasks.length < this._subTasks.length) {
+          return null
         }
         return Math.max.apply(null, finishedTasks.map(it => it.finishAt()))
       }
