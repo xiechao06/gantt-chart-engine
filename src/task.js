@@ -263,7 +263,7 @@ class Task {
       }
       return Math.max(...this.getDependsUpon().map(it => it.expectedToFinishAt))
     }
-    return Math.max(...this.subTasks.map(it => it.expectedToStartAt))
+    return Math.min(...this.subTasks.map(it => it.expectedToStartAt))
   }
 
   start (args) {

@@ -102,18 +102,15 @@ describe('non leaf task', function () {
         .name('A')
         .addSubTask(task => task
           .name('AA')
-          .expectedTimeSpan('1d')
         )
       )
       .addSubTask(task => task
         .name('B')
         .addSubTask(task => task
           .name('BA')
-          .expectedTimeSpan('1d')
         )
         .addSubTask(task => task
           .name('BB')
-          .expectedTimeSpan('2d')
         )
       )
       .addSubTask(task => task
@@ -122,11 +119,9 @@ describe('non leaf task', function () {
           .name('CA')
           .addSubTask(task => task
             .name('CAA')
-            .expectedTimeSpan('1d')
           )
           .addSubTask(task => task
             .name('CAB')
-            .expectedTimeSpan('2d')
           )
         )
       )
@@ -289,7 +284,9 @@ describe('non leaf task', function () {
 
   it('expectedToStartAt', function () {
     bb.dependsUpon(aa)
+      .expectedTimeSpan('2d')
     aa.expectedTimeSpan('1d')
+    ba.dependsUpon(bb)
     b.expectedToStartAt.should.be.exactly(ts('1d', 'ms'))
   })
 
