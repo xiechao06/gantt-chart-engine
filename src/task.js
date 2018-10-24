@@ -282,7 +282,7 @@ class Task {
     } else {
       if (t === void 0) {
         let startedTasks = this._subTasks.filter(it => it.startAt() !== void 0)
-        if (startedTasks.length < this._subTasks.length) {
+        if (!startedTasks.length) {
           return null
         }
         return Math.min.apply(null, startedTasks.map(it => it.startAt()))
