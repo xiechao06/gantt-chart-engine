@@ -1,6 +1,6 @@
 {
   "name": "gantt-engine",
-  "version": "1.6.5",
+  "version": "1.6.6",
   "main": "dist/gantt-engine.cjs.js",
   "module": "dist/gantt-engine.esm.js",
   "dependencies": {
