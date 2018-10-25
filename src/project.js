@@ -31,6 +31,10 @@ class Project extends Task {
     this.base(arg.base)
     return this
   }
+
+  clone () {
+    return new Project().fromJSON(this.toJSON())
+  }
 }
 
 export default Project
