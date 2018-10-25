@@ -21,6 +21,7 @@ class Task {
     this._subTasks = []
     this._dependsUpon = []
     this._level = parent ? parent.level + 1 : 0
+    this._expectedTimeSpan = 0
     this._base = 0
     this.$ = this.find
     this.duration = this.expectedTimeSpan
@@ -311,7 +312,7 @@ class Task {
           }
           return 0
         }
-        return this._expectedTimeSpan || 0
+        return this._expectedTimeSpan
       }
       this._expectedTimeSpan = typeof arg === 'string'
         ? timestring(arg, 'ms')

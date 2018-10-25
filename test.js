@@ -293,6 +293,11 @@ describe('non leaf task', function () {
     b.expectedToStartAt.should.be.exactly(ts('1d', 'ms'))
   })
 
+  it('expectedToStartAt2', function () {
+    ba.dependsUpon(aa)
+    b.expectedToStartAt.should.be.exactly(0)
+  })
+
   it('removeDependsOn', function () {
     ca.dependsUpon(ba)
     ca.removeDependsUpon(ba)
@@ -306,6 +311,10 @@ describe('non leaf task', function () {
     dateformat(new Date(a.expectedToFinishAt), 'yyyy-mm-dd').should.be.exactly('2018-10-02')
     aa.finishAt('2018-10-03')
     dateformat(new Date(a.expectedToFinishAt), 'yyyy-mm-dd').should.be.exactly('2018-10-03')
+  })
+
+  it('expectedToFinishAt', function () {
+    aa.expectedToFinishAt.should.be.exactly(0)
   })
 
   it('ops', async function () {
