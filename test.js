@@ -17,6 +17,14 @@ describe('leaf task', function () {
     task.isLeaf.should.be.exactly(true)
   })
 
+  it('progress', function () {
+    should(task.progress).be.exactly(void 0)
+    task.startAt('2018-10-10')
+    task.progress.should.be.exactly(0)
+    task.finishAt('2018-10-10')
+    task.progress.should.be.exactly(1)
+  })
+
   it('level', function () {
     task.level.should.be.exactly(0)
   })

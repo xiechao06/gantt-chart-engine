@@ -39,6 +39,15 @@ class Task {
     return this._parent ? this._parent.root : this
   }
 
+  get progress () {
+    if (this.finishAt()) {
+      return 1
+    }
+    if (this.startAt()) {
+      return 0
+    }
+  }
+
   base (arg) {
     if (arg === void 0) {
       return this._base
