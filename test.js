@@ -293,6 +293,14 @@ describe('non leaf task', function () {
     ca.dependsUpon().map(it => it.canonicalName).should.be.deepEqual([['A', 'AA'], ['B']])
   })
 
+  it('dependsUpon previous', function () {
+    bb.dependsUpon('~')
+    bb.dependsUpon().map(it => it.canonicalName).should.be.deepEqual([['B', 'BA']])
+    ;(function () {
+      caa.dependsUpon('~')
+    }).should.throw(/no previous sibling/)
+  })
+
   it('expectedToStartAt', function () {
     bb.dependsUpon(aa)
       .expectedTimeSpan('2d')

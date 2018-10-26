@@ -224,9 +224,22 @@ class Task {
     let dependsUpon = []
     let root = this.root
     for (let n of canonicalNames) {
-      let task = root.$(n)
-      if (!task) {
-        throw taskError(n, n => `no such task: ${n}`)
+      let task
+      if (n === '~') {
+        // find previous siblings
+        let subTasks = this._parent.subTasks
+        // previous to me or the last children of my parent
+        for (var i = 0; i < subTasks.length && subTasks[i] !== this; ++i) {
+        }
+        task = subTasks[i - 1]
+        if (!task) {
+          throw Error('no previous sibling to depends upon')
+        }
+      } else {
+        task = root.$(n)
+        if (!task) {
+          throw taskError(n, n => `no such task: ${n}`)
+        }
       }
       if (this === task) {
         throw taskError(n, n => `can not depends upon self: ${n}`)
