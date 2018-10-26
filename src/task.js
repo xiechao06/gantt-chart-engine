@@ -173,6 +173,10 @@ class Task {
     return true
   }
 
+  get plainDependsUpon () {
+    return this._dependsUpon
+  }
+
   getDependsUpon () {
     if (!this._parent) {
       return []
@@ -470,6 +474,7 @@ class Task {
       canonicalName: this.canonicalName,
       label: this.label(),
       subTasks: this.subTasks.map(it => it.toJSON()),
+      plainDependsUpon: this._dependsUpon.map(it => it.canonicalName),
       dependsUpon: this.getDependsUpon().map(it => it.canonicalName),
       expectedToStartAt: this.expectedToStartAt,
       startAt: this.startAt(),
@@ -496,8 +501,8 @@ class Task {
     arg.subTasks &&
       arg.subTasks.length &&
       arg.subTasks.forEach(it => this.addSubTask(task => task.fromJSON(it)))
-    arg.dependsUpon && arg.dependsUpon.length &&
-      this.dependsUpon(...arg.dependsUpon)
+    arg.plainDependsUpon && arg.plainDependsUpon.length &&
+      this.dependsUpon(...arg.plainDependsUpon)
     return this
   }
 
