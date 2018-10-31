@@ -409,7 +409,7 @@ class Task {
 
   get ops () {
     if (!this.isLeaf ||
-      !this.getDependsUpon().every(it => it._finishAt) ||
+      !this.getDependsUpon().every(it => it.finishAt()) ||
       this._finishAt
     ) {
       return []
