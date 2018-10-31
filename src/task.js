@@ -12,6 +12,16 @@ function taskError (taskName, tpl) {
   return new Error(tpl(taskName))
 }
 
+function clone (o) {
+  if (Array.isArray(o)) {
+    return o.slice(0)
+  }
+  if (typeof o === 'object') {
+    return Object.assign({}, o)
+  }
+  return o
+}
+
 class Task {
   constructor (name, parent) {
     name && this.name(name)
@@ -25,6 +35,29 @@ class Task {
     this._base = 0
     this.$ = this.find
     this.duration = this.expectedTimeSpan
+  }
+
+  clone () {
+    return new Task().from(this)
+  }
+
+  from (task) {
+    this._name = task._name
+    this._parent = task._parent
+    this._onStartCbs = task._onStartCbs.slice(0)
+    this._onFinishCbs = task._onFinishCbs.slice(0)
+    this._subTasks = task._subTasks.map(it => it.clone())
+    this._dependsUpon = task._dependsUpon.slice(0)
+    this._level = task._level
+    this._expectedTimeSpan = task._expectedTimeSpan
+    this._base = task._base
+    this._bundle = clone(task._bundle)
+    this._label = task._label
+    this._startAt = task._startAt
+    this._finishAt = task._finishAt
+    this._startArg = clone(task._startArg)
+    this._finishArg = clone(task._finishArg)
+    return this
   }
 
   get level () {

@@ -1,10 +1,10 @@
 import Task from './task'
 
-function _clearTask (json, fields) {
+function _clearTask (task, fields) {
   for (let it of fields) {
-    delete json[it]
+    delete task[it]
   }
-  for (let t of json.subTasks) {
+  for (let t of task.subTasks) {
     _clearTask(t, fields)
   }
 }
@@ -15,9 +15,9 @@ class Project extends Task {
   }
 
   get baseline () {
-    let json = this.toJSON()
-    _clearTask(json, ['startAt', 'startArg', 'finishAt', 'finishArg'])
-    return new Project().fromJSON(json)
+    let ret = this.clone()
+    _clearTask(ret, ['_startAt', '_startArg', '_finishAt', '_finishArg'])
+    return ret
   }
 
   toJSON () {
@@ -26,14 +26,14 @@ class Project extends Task {
     })
   }
 
+  clone () {
+    return new Project().from(this)
+  }
+
   fromJSON (arg) {
     super.fromJSON(arg)
     this.base(arg.base)
     return this
-  }
-
-  clone () {
-    return new Project().fromJSON(this.toJSON())
   }
 }
 
