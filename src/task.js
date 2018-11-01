@@ -37,16 +37,16 @@ class Task {
     this.duration = this.expectedTimeSpan
   }
 
-  clone () {
-    return new Task().from(this)
+  clone (parent) {
+    return new Task().from(this, parent)
   }
 
-  from (task) {
+  from (task, parent) {
     this._name = task._name
-    this._parent = task._parent
+    this._parent = parent
     this._onStartCbs = task._onStartCbs.slice(0)
     this._onFinishCbs = task._onFinishCbs.slice(0)
-    this._subTasks = task._subTasks.map(it => it.clone())
+    this._subTasks = task._subTasks.map(it => new Task().from(it, this))
     this._dependsUpon = task._dependsUpon.slice(0)
     this._level = task._level
     this._expectedTimeSpan = task._expectedTimeSpan
