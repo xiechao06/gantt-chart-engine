@@ -356,9 +356,7 @@ class Task {
     if (arg === void 0) {
       return this._startArg
     }
-    this._startArg = typeof arg === 'string'
-      ? timestring(arg, 'ms')
-      : arg
+    this._startArg = arg
     return this
   }
 
