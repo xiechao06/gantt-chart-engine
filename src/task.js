@@ -510,7 +510,8 @@ class Task {
       expectedToStartAt: this.expectedToStartAt,
       startAt: this.startAt(),
       startArg: this.startArg(),
-      expectedTimeSpan: this.expectedTimeSpan(),
+      // using the preset value
+      expectedTimeSpan: this._expectedTimeSpan,
       duration: this.expectedTimeSpan(),
       finishAt: this.finishAt(),
       finishArg: this.finishArg(),
@@ -523,10 +524,7 @@ class Task {
   }
 
   fromJSON (arg) {
-    for (let k of [
-      'name', 'label', 'startAt', 'startArg', 'expectedTimeSpan', 'finishAt',
-      'finishArg', 'description', 'bundle'
-    ]) {
+    for (let k of [ 'name', 'label', 'description', 'bundle' ]) {
       arg[k] !== void 0 && arg[k] !== null && this[k](arg[k])
     }
     arg.subTasks &&
@@ -534,6 +532,13 @@ class Task {
       arg.subTasks.forEach(it => this.addSubTask(task => task.fromJSON(it)))
     arg.plainDependsUpon && arg.plainDependsUpon.length &&
       this.dependsUpon(...arg.plainDependsUpon)
+    if (this.isLeaf) {
+      for (let k of [
+        'expectedTimeSpan', 'startAt', 'startArg', 'finishAt', 'finishArg'
+      ]) {
+        arg[k] !== void 0 && arg[k] !== null && this[k](arg[k])
+      }
+    }
     return this
   }
 

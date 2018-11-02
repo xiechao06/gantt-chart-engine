@@ -347,13 +347,13 @@ describe('non leaf task', function () {
   })
 
   it('toJSON/fromJSON', function () {
-    aa.startAt('2018-10-01')
+    aa.finishAt('2018-10-01')
     bb.dependsUpon(['A', 'AA'])
     caa.startArg({ a: 'foo' })
     let _project = new Project().fromJSON(project.toJSON())
     let _aa = _project.$(['A', 'AA'])
     _aa.name().should.be.exactly('AA')
-    dateformat(new Date(aa.startAt()), 'yyyy-mm-dd').should.be.exactly('2018-10-01')
+    dateformat(new Date(_aa.finishAt()), 'yyyy-mm-dd').should.be.exactly('2018-10-01')
     let _caa = _project.$(['C', 'CA', 'CAA'])
     _caa.name().should.be.exactly('CAA')
     _caa.startArg().a.should.be.exactly('foo')
